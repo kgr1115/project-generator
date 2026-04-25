@@ -1,0 +1,46 @@
+{
+  "_comment": "Example Claude Code settings.json for the ai-pipeline-scaffold. Copy to settings.json and trim to the actual tool surface your pipeline needs. The permissions.allow list is the load-bearing safety rail referenced throughout the agents and skills; scoping it tightly is how you avoid shipping --dangerously-skip-permissions in headless sessions. JSON does not support inline comments, so annotations live in this _comment field and in CUSTOMIZE.md.",
+
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Edit",
+      "Write",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git branch:*)",
+      "Bash(git init:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(diff:*)",
+      "Bash(python -m py_compile:*)",
+      "Bash(python -c:*)",
+      "Task",
+      "TodoWrite",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "deny": [
+      "Bash(rm -rf /:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git commit --no-verify:*)",
+      "Bash(git commit --no-gpg-sign:*)"
+    ]
+  },
+
+  "_notes_for_adopters": [
+    "Start from this file, rename to settings.json, then trim the allow list to only what your pipeline actually invokes. A smaller surface = safer failure mode (loud denial rather than silent bypass).",
+    "Never add '--dangerously-skip-permissions' to any agent spawn or subprocess call — the scaffold's publisher and implementer both refuse this explicitly.",
+    "If your project uses paired forks, settings.json lives in the private fork only; the public fork inherits none of this config when forkers clone it.",
+    "The 'deny' list is belt-and-suspenders — the allow list is the primary gate. A command absent from 'allow' is already denied.",
+    "settings.json itself should be gitignored if it carries user-specific permissions; settings.local.json is the conventional name for purely-local overrides (already in templates/public-scaffold/.gitignore)."
+  ]
+}

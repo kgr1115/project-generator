@@ -1,0 +1,29 @@
+# blocked-paths.txt — publisher's personal-data guard list
+#
+# Each non-comment, non-empty line is a path or glob that MUST NEVER reach a public remote.
+# The publisher reads this file and runs a deterministic match against `git diff --cached --name-only`.
+# Any cached path that matches a non-comment line in this file -> publisher REFUSES the push.
+#
+# Format:
+#   - Lines starting with `#` are comments.
+#   - Blank lines are ignored.
+#   - All other lines are entries. Two entry kinds are supported:
+#       * Literal paths (no glob characters): exact match against the cached path.
+#       * Globs (containing `*` or `?`): shell-glob match against each cached path.
+#
+# Examples (uncomment and adapt for your project):
+#   data/originals/                  # the user's read-only source material directory
+#   data/originals/*                 # all files under it
+#   reports/sent/*                   # generated real user artifacts
+#   contact.json                     # config file with secrets / identifying info
+#   logs/*.md                        # logs with real session content
+#
+# ---
+#
+# For the ai-pipeline-scaffold itself, this file is intentionally empty:
+# the scaffold ships publicly in full, has no real user data on disk,
+# and uses the same {{PLACEHOLDER}} tokens its bootstrap tool substitutes downstream.
+#
+# For SPAWNED projects (created via `/begin`), the bootstrap tool seeds this
+# file from the user's Phase-1 data-sensitivity answer. Keep it up to date
+# every time you add a new directory of personal/sensitive content.
