@@ -79,7 +79,7 @@ Rephrase the incoming report as one sentence of observable behavior before touch
 ### F6. bootstrap-project Phase 3/4 mkdir fails on Windows path with spaces
 
 **Symptom:** `bootstrap-project` skill aborts during Phase 3 (private repo creation) or Phase 4 (public repo creation) with a path-related error — `mkdir: cannot create directory ... No such file or directory`, or copy commands choke on unquoted spaces in `<parent-dir>`.
-**Cause:** The parent-directory answer from Phase 1 contains spaces (e.g. `C:\Users\Kyle Rauch\projects\`), and the bash invocation didn't quote it. Bash on Windows treats unquoted spaces as argument separators.
+**Cause:** The parent-directory answer from Phase 1 contains spaces (e.g. `C:\Users\Jane Doe\projects\`), and the bash invocation didn't quote it. Bash on Windows treats unquoted spaces as argument separators.
 **Check:** Look at the `parent-dir` value the user provided in Phase 1. If it contains spaces, examine the actual `mkdir` / `cp` invocation that failed — it's almost certainly missing quotes around the path variable.
 **Fix:** Quote every shell expansion of `<PRIVATE_PATH>`, `<PUBLIC_PATH>`, and `<parent-dir>` in the commands the skill runs. As a workaround for an in-flight bootstrap, the user can re-answer Phase 1 with a parent dir that has no spaces (`C:\projects\`), or the implementer can patch the skill to wrap path variables in double-quotes throughout.
 
